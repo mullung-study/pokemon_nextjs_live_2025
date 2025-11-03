@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 type User = {
   name: string;
   age: number;
@@ -201,3 +203,46 @@ const POKE_TYPE: ExtenededPokemonType = {
     displayName: "Fire"
   }
 }
+
+function identity<T>(value: T): T {
+  return value
+}
+
+identity<number>(10)
+identity("ts")
+
+function getFirst<T>(arr:T[]):T {
+  return arr[0];
+}
+
+getFirst<string>(["a","b"])
+getFirst([1,2])
+
+interface Box<T> {
+  value:T;
+}
+const numBox: Box<number> = {value:20}
+const strBox = {value:"a"}
+
+interface PokemonContainer<T extends string> {
+  pokemonName: T;
+}
+const firePokemon:PokemonContainer<"파이리"> ={pokemonName:"파이리"}
+
+interface Pokemon<T, U> {
+  id: T;
+  name: U;
+}
+
+const p1: Pokemon<number,string> = {id:25, name:"pikachu"} 
+const p2: Pokemon<string,string> = {id:"25", name:"pikachu"} 
+
+const [name, setName] = useState("pikachu")
+const [pokemon, setPokemon] = useState<string | null>(null);
+const [list, setList] = useState<string[]>([])
+
+
+// - *포켓몬 목록을 저장하는 state 만들기 - `[pokemonList, setPokemonList]`*
+// - *초기값: ["피카츄", "라이츄", "파이리"]*
+
+const [pokemonList, setPokemonList] = useState<string[]>(["피카츄", "라이츄", "파이리"])
