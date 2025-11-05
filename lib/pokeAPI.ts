@@ -9,7 +9,7 @@ export interface PokemonProps {
 
 export async function getPokemon(id:number): Promise<PokemonProps> {
   try {
-    console.log(`${id} API Called`)
+    // console.log(`${id} API Called`)
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
       next: { revalidate: 3600 }
     })
