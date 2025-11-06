@@ -10,23 +10,15 @@ import TypeBadge from "./TypeBadge";
 import Image from "next/image";
 
 export default function PokemonCard({pokemon}:{pokemon:PokemonProps}) {
-  // const [pokemon, setPokemon] = useState<PokemonProps | null>(null);
-
-  // useEffect( () => {
-  //   async function fetchData(){
-  //     const data = await getPokemon(id)
-  //     setPokemon(data);
-  //   }
-  //   fetchData();
-  // }, [])
-  
-  // if (!pokemon) return <div>Loading...</div>
+  // TODO session, favorites, showDialog, isFavorited 추가
   const typeConfig = getTypeConfig(pokemon?.types[0])
+   // TODO handleStarClick 만들기
+
   return (
     <Link href={`/pokemon/${pokemon?.id}`}>
       <Card 
         className={cn(
-          "w-full",
+          "w-full", // TODO relative 추가
           "rounded-md",
           "hover:opacity-80",
           "hover:scale-105",
@@ -38,6 +30,7 @@ export default function PokemonCard({pokemon}:{pokemon:PokemonProps}) {
         )}
       >
           <CardHeader className="flex justify-center">
+            // TODO button 추가
             <CardTitle className="text-xl font-bold">
               {pokemon?.name}
             </CardTitle>
@@ -50,5 +43,6 @@ export default function PokemonCard({pokemon}:{pokemon:PokemonProps}) {
           </CardContent>
       </Card>
     </Link>
+    //TODO FavoriteDialog 추가 + Fragment로 감싸기
   )
 }
