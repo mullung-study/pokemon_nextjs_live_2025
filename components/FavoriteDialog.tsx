@@ -13,11 +13,27 @@ export default function FavoriteDialog({
   open, onOpenChange, pokemonId, pokemonName
 }: FavoriteProps) {
   const { favorites, setFavorites } = useUserInfo();  // Context 가져옴
+
   const isFavorited = favorites.includes(pokemonId);
 
   async function handleConfirm() {
     // TODO HandleConfirm 내부 구현하기
-    
+    if(isFavorited) {
+      await fetch('/api/favorites', {
+        method: "DELETE",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({pokemon_id:pokemonId})
+      })
+      setFavorites((prev)=>prev.filter( (id)=> (id!==pokemonId) ))
+    } else {
+      await fetch('/api/favorites', {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({pokemon_id:pokemonId})
+      })
+      setFavorites(prev => [...prev, pokemonId])
+    }
+    onOpenChange(false);
   }
 
   return (
