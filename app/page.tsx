@@ -6,7 +6,7 @@ import { Suspense } from "react";
 
 async function PokemonItem({id}:{id:number}) {
   const pokemon = await getPokemon(id);
-  return <PokemonCard pokemon={pokemon} />
+  return <PokemonCard pokemon={pokemon} priority={id<13} />
 }
 
 export default function Home() {
