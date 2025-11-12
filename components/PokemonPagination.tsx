@@ -8,7 +8,13 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 
-export default function PokemonPagination({currentPage, totalPages}:{currentPage:number, totalPages:number}) {
+interface PokemonPaginationProps {
+  currentPage:number;
+  totalPages:number;
+  params: {page?: string, type?:string}
+}
+
+export default function PokemonPagination({currentPage, totalPages, params}:PokemonPaginationProps) {
   const PAGE_GROUP_SIZE = 10;
   const currentGroup = Math.floor( (currentPage-1)/ PAGE_GROUP_SIZE)
   const startPage = currentGroup * PAGE_GROUP_SIZE + 1
@@ -20,12 +26,18 @@ export default function PokemonPagination({currentPage, totalPages}:{currentPage
   const prevGroupPage = startPage - 1;
   const nextGroupPage = endPage + 1;
 
+  const buildPageUrl = (page:number) => {
+    const urlParams = new URLSearchParams(params as Record<string, string>)
+    urlParams.set('page', page.toString())
+    return `/?${urlParams.toString()}`
+  }
+
   return (
     <Pagination>
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious 
-            href={currentPage > 1 ? `/?page=${prevGroupPage}` : undefined} 
+            href={currentPage > 1 ? buildPageUrl(prevGroupPage) : undefined} 
             className={!hasPrevGroup ? 'invisible' : ''}
           />
         </PaginationItem>
@@ -34,7 +46,7 @@ export default function PokemonPagination({currentPage, totalPages}:{currentPage
           return (
             <PaginationItem key={pageNum}>
               <PaginationLink
-                href={`/?page=${pageNum}`}
+                href={buildPageUrl(pageNum) }
                 isActive={currentPage === pageNum}
               >
                 {pageNum}
@@ -44,7 +56,7 @@ export default function PokemonPagination({currentPage, totalPages}:{currentPage
         })}
         <PaginationItem>
           <PaginationNext
-            href={currentPage < totalPages ? `/?page=${nextGroupPage}` : undefined} 
+            href={currentPage < totalPages ? buildPageUrl(nextGroupPage) : undefined} 
             className={!hasNextGroup ? 'invisible' : ''}
           />
         </PaginationItem>

@@ -2,13 +2,14 @@
 import PokemonCard from "@/components/PokemonCard";
 import { PokemonSkeleton } from "@/components/PokemonCardSkeleton";
 import PokemonPagination from "@/components/PokemonPagination";
+import TypeFilter from "@/components/TypeFilter";
 import { getPokemon } from "@/lib/pokeAPI";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 async function PokemonItem({id}:{id:number}) {
   const pokemon = await getPokemon(id);
-  return <PokemonCard pokemon={pokemon} priority={id<13} />
+  return <PokemonCard pokemon={pokemon} priority={true} />
 }
 
 const ITEMS_PER_PAGE = 12;
@@ -31,6 +32,7 @@ export default async function Home({searchParams}:{searchParams:Promise<{page?:s
 
   return (
     <div>
+      <TypeFilter />
       <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-8 mx-4">
         {Array.from({length:NumOfPokemon}).map((_, i) => {
           return (
@@ -41,7 +43,7 @@ export default async function Home({searchParams}:{searchParams:Promise<{page?:s
         })}
       </div>
       <div className="flex justify-center py-6">
-        <PokemonPagination currentPage={currentPage} totalPages={totalPages}/>
+        <PokemonPagination currentPage={currentPage} totalPages={totalPages} params={params}/>
       </div>
     </div>
   );
