@@ -6,17 +6,26 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 import { FaMoon, FaSun } from "react-icons/fa6";
 import LoginButton from "./loginButton";
+import { useSession } from "next-auth/react";
+import { useUserStore } from "@/store/userStore";
 
 
 export function Navigation(){
-  // TODO useTheme 적용
+
   const {theme, setTheme} = useTheme();
   const [mouted, setMouted] = useState(false);
 
-  // TODO useState + useEffect로 mounted 적용 - 클라이언트에서 theme이 준비될 때까지 버튼을 숨김
+  const {data:session} = useSession()
+  const loadFavorites = useUserStore((state)=>state.loadFavorites)
+
   useEffect(()=> {
     setMouted(true)
   }, [])
+
+  useEffect( ()=> {
+    loadFavorites(session)
+  }, [session, loadFavorites])
+  
   return (
     <nav className="border-b mx-3">
       <div className="container flex h-14 max-w-screen-2xl justify-between">

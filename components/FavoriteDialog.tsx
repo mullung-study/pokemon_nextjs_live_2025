@@ -1,6 +1,6 @@
 // FavoriteDialog.tsx
-import { useUserInfo } from "@/contexts/UserInfoProvider";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "./ui/alert-dialog";
+import { useUserStore } from "@/store/userStore";
 
 interface FavoriteProps {
   open: boolean;
@@ -12,26 +12,29 @@ interface FavoriteProps {
 export default function FavoriteDialog({
   open, onOpenChange, pokemonId, pokemonName
 }: FavoriteProps) {
-  const { favorites, setFavorites } = useUserInfo();  // Context 가져옴
+  // const { favorites, setFavorites } = useUserInfo();  // Context 가져옴
+  const {favorites, addFavorite, removeFavorite} = useUserStore()
 
   const isFavorited = favorites.includes(pokemonId);
-
+  
   async function handleConfirm() {
-    // TODO HandleConfirm 내부 구현하기
+
     if(isFavorited) {
       await fetch('/api/favorites', {
         method: "DELETE",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({pokemon_id:pokemonId})
       })
-      setFavorites((prev)=>prev.filter( (id)=> (id!==pokemonId) ))
+      // setFavorites((prev)=>prev.filter( (id)=> (id!==pokemonId) ))
+      removeFavorite(pokemonId)
     } else {
       await fetch('/api/favorites', {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({pokemon_id:pokemonId})
       })
-      setFavorites(prev => [...prev, pokemonId])
+      // setFavorites(prev => [...prev, pokemonId])
+      addFavorite(pokemonId)
     }
     onOpenChange(false);
   }

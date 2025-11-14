@@ -9,21 +9,22 @@ import { cn } from "@/lib/utils";
 import TypeBadge from "./TypeBadge";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { useUserInfo } from "@/contexts/UserInfoProvider";
 import { useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import FavoriteDialog from "./FavoriteDialog";
+import { useUserStore } from "@/store/userStore";
 
 export default function PokemonCard({pokemon, priority=false}:{pokemon:PokemonProps, priority?:boolean}) {
-  // TODO session, favorites, showDialog, isFavorited 추가
+
   const {data:session} = useSession()
   
-  const {favorites, setFavorites} = useUserInfo()
+  // const {favorites, setFavorites} = useUserInfo()
+  const favorites = useUserStore(state=>state.favorites)
 
   const [showDialog, setShowDialog] = useState(false)
   const isFavorited = favorites.includes(pokemon.id)
   const typeConfig = getTypeConfig(pokemon?.types[0])
-   // TODO handleStarClick 만들기
+
   function handleStarClick(e:React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();

@@ -1,35 +1,45 @@
 "use client"
 
 import { getAllTypeNames, PokemonTypeKey } from "@/lib/pokemonTypes"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import TypeBadge from "./TypeBadge"
 import { useRouter, useSearchParams } from "next/navigation"
+import { usePokeTypeStore } from "@/store/pokeTypeStore"
+import { Button } from "./ui/button"
+import { cn } from "@/lib/utils"
 
 export default function TypeFilter() {
   const router = useRouter()
-  const searchParams = useSearchParams()
+  // const searchParams = useSearchParams()
 
-  const typeParam = searchParams.get('type')
-  const selectedTypes = typeParam ? typeParam.split(',') : []
+  // const typeParam = searchParams.get('type')
+  // const selectedTypes = typeParam ? typeParam.split(',') : []
+  const {selectedTypes, toggleType, resetTypes} = usePokeTypeStore()
 
-  function handleClick(type:string) {
-    const params = new URLSearchParams(searchParams.toString())
+  function handleClick(type:PokemonTypeKey) {
+    const params = new URLSearchParams()
+    toggleType(type)
+    // let newSelectedTypes: string[]
+    // if (selectedTypes.includes(type)) {
+    //   newSelectedTypes = selectedTypes.filter(t=> t!==type)
+    // } else {
+    //   newSelectedTypes = [...selectedTypes, type]
+    // }
 
-    let newSelectedTypes: string[]
-    if (selectedTypes.includes(type)) {
-      newSelectedTypes = selectedTypes.filter(t=> t!==type)
-    } else {
-      newSelectedTypes = [...selectedTypes, type]
-    }
-
-    if (newSelectedTypes.length === 0) {
-      params.delete('type')
-    } else {
-      params.set('type', newSelectedTypes.join(',')) // ['f', 'w'] -> 'f,w'  tyep=fire,water
-    }
+    // if (newSelectedTypes.length === 0) {
+    //   params.delete('type')
+    // } else {
+    //   params.set('type', newSelectedTypes.join(',')) // ['f', 'w'] -> 'f,w'  tyep=fire,water
+    // }
     params.set('page', '1')
     router.push(`/?${params.toString()}`)
   }
+
+  function handleReset() {
+    resetTypes()
+  }
+  useEffect( ()=>console.log(selectedTypes), [selectedTypes] )
+
   return (
     <div className="m-4 p-4 border-2 rounded-2xl">
       <div className="flex items-start gap-3">
@@ -40,12 +50,21 @@ export default function TypeFilter() {
               <TypeBadge 
                 key={type}
                 typeName={type as PokemonTypeKey}
-                onClick={()=>handleClick(type)}
-                isSelected={selectedTypes.includes(type)}
+                onClick={()=>handleClick(type as PokemonTypeKey)}
+                isSelected={selectedTypes.includes(type as PokemonTypeKey)}
               />
             )
           })}
         </div>
+        <Button
+          onClick={handleReset}
+          disabled={selectedTypes.length===0}
+          className={cn(
+            selectedTypes.length===0 && "invisible"
+          )}
+        >
+          초기화
+        </Button>
       </div>
     </div>
   )

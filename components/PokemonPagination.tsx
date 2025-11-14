@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Pagination,
   PaginationContent,
@@ -7,14 +9,16 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
+import { useRouter } from "next/router";
 
 interface PokemonPaginationProps {
   currentPage:number;
   totalPages:number;
-  params: {page?: string, type?:string}
+  // params: {page?: string, type?:string}
 }
 
-export default function PokemonPagination({currentPage, totalPages, params}:PokemonPaginationProps) {
+export default function PokemonPagination({currentPage, totalPages}:PokemonPaginationProps) {
+  const router = useRouter()
   const PAGE_GROUP_SIZE = 10;
   const currentGroup = Math.floor( (currentPage-1)/ PAGE_GROUP_SIZE)
   const startPage = currentGroup * PAGE_GROUP_SIZE + 1
@@ -26,10 +30,8 @@ export default function PokemonPagination({currentPage, totalPages, params}:Poke
   const prevGroupPage = startPage - 1;
   const nextGroupPage = endPage + 1;
 
-  const buildPageUrl = (page:number) => {
-    const urlParams = new URLSearchParams(params as Record<string, string>)
-    urlParams.set('page', page.toString())
-    return `/?${urlParams.toString()}`
+  const handlePageChange = (page:number) => {
+    router.push(`/?page=${page}`)
   }
 
   return (
@@ -37,8 +39,9 @@ export default function PokemonPagination({currentPage, totalPages, params}:Poke
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious 
-            href={currentPage > 1 ? buildPageUrl(prevGroupPage) : undefined} 
-            className={!hasPrevGroup ? 'invisible' : ''}
+            // href={currentPage > 1 ? buildPageUrl(prevGroupPage) : undefined} 
+            onClick={()=>currentPage > 1  && handlePageChange(prevGroupPage)}
+            className={!hasPrevGroup ? 'invisible' : 'cursor-pointer'}
           />
         </PaginationItem>
         {Array.from({length: endPage - startPage + 1}).map( (_,i) => {
@@ -46,8 +49,9 @@ export default function PokemonPagination({currentPage, totalPages, params}:Poke
           return (
             <PaginationItem key={pageNum}>
               <PaginationLink
-                href={buildPageUrl(pageNum) }
+                onClick={()=>handlePageChange(pageNum) }
                 isActive={currentPage === pageNum}
+                className='cursor-pointer'
               >
                 {pageNum}
               </PaginationLink>
@@ -56,8 +60,8 @@ export default function PokemonPagination({currentPage, totalPages, params}:Poke
         })}
         <PaginationItem>
           <PaginationNext
-            href={currentPage < totalPages ? buildPageUrl(nextGroupPage) : undefined} 
-            className={!hasNextGroup ? 'invisible' : ''}
+            onClick={()=>(currentPage < totalPages ? handlePageChange(nextGroupPage) : undefined)} 
+            className={!hasNextGroup ? 'invisible' : 'cursor-pointer'}
           />
         </PaginationItem>
       </PaginationContent>
