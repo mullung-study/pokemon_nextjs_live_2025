@@ -1,3 +1,4 @@
+"use client"
 import { getPokemon, PokemonProps } from "@/lib/pokeAPI";
 import { useEffect, useState } from "react";
 import { PokemonSkeleton } from "./PokemonCardSkeleton";

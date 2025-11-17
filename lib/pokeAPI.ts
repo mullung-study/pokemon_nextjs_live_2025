@@ -13,6 +13,9 @@ export async function getPokemon(id:number): Promise<PokemonProps> {
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
       next: { revalidate: 3600 }
     })
+    if (res.status === 404) {
+      throw new Error("NOT_FOUND")
+    }
     if (!res.ok) throw new Error(`PokeAPI fetch failed : ${res.status} ${res.statusText}`)
     const data = await res.json();
     return {
