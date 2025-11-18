@@ -37,14 +37,14 @@ export default function PokemonCard({pokemon, priority=false}:{pokemon:PokemonPr
 
   return (
     <>
-      <Link href={`/pokemon/${pokemon?.id}`}>
+      <Link href={`/pokemon/${pokemon?.id}`} className="cursor-target p-0.5">
         <Card 
           className={cn(
-            "w-full", // TODO relative 추가
+            "w-full",
             "relative",
             "rounded-md",
             "hover:opacity-80",
-            "hover:scale-105",
+            // "hover:scale-105",
             "transition-all",
             "duration-200",
             "hover:cursor-pointer",
@@ -62,7 +62,8 @@ export default function PokemonCard({pokemon, priority=false}:{pokemon:PokemonPr
                   "z-10",
                   "p-1",
                   "rounded-full",
-                  "hover:hg-white/20"
+                  "hover:hg-white/20",
+                  "cursor-target"
                 )}
               >
               {isFavorited ? (

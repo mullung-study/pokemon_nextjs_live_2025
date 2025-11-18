@@ -47,12 +47,14 @@ export default function TypeFilter() {
         <div className="flex flex-wrap gap-2.5">
           {getAllTypeNames().map( (type) => {
             return (
-              <TypeBadge 
-                key={type}
-                typeName={type as PokemonTypeKey}
-                onClick={()=>handleClick(type as PokemonTypeKey)}
-                isSelected={selectedTypes.includes(type as PokemonTypeKey)}
-              />
+              <div key={type} className="cursor-target">
+                <TypeBadge 
+                  typeName={type as PokemonTypeKey}
+                  onClick={()=>handleClick(type as PokemonTypeKey)}
+                  isSelected={selectedTypes.includes(type as PokemonTypeKey)}
+                />
+              </div>
+
             )
           })}
         </div>

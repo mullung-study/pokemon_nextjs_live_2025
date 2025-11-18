@@ -30,10 +30,10 @@ export function Navigation(){
     <nav className="border-b mx-3">
       <div className="container flex h-14 max-w-screen-2xl justify-between">
         <div className="flex items-center gap-4">
-          <Link href="/">
+          <Link href="/" className="cursor-target">
             <h2>포켓몬 도감</h2>
           </Link>
-          <Link href="/about">
+          <Link href="/about" className="cursor-target">
             <h2>About</h2>
           </Link>
         </div>
@@ -45,6 +45,7 @@ export function Navigation(){
                 variant="ghost"
                 size="sm"
                 onClick={()=>setTheme(theme==='dark' ? "light" : "dark")}
+                className="cursor-target"
               >
                 {theme === "dark" ? (
                   <FaSun className="text-yellow-500"/>

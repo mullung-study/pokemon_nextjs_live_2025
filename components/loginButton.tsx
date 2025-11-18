@@ -46,10 +46,10 @@ export default function LoginButton() {
             </Badge>
           )}
         </div>
-        <Button onClick={() => signOut()}>로그아웃</Button>
+        <Button onClick={() => signOut() } className="cursor-target">로그아웃</Button>
       </div>
     )
   }
   
-  return <Button onClick={() => signIn()}>로그인</Button>
+  return <Button onClick={() => signIn()} className="cursor-target">로그인</Button>
 }
