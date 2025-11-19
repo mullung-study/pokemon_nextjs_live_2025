@@ -41,7 +41,7 @@ export default function PokemonPagination({currentPage, totalPages}:PokemonPagin
           <PaginationPrevious 
             // href={currentPage > 1 ? buildPageUrl(prevGroupPage) : undefined} 
             onClick={()=>currentPage > 1  && handlePageChange(prevGroupPage)}
-            className={!hasPrevGroup ? 'invisible' : 'cursor-pointer'}
+            className={!hasPrevGroup ? 'invisible' : 'cursor-pointer cursor-target'}
           />
         </PaginationItem>
         {Array.from({length: endPage - startPage + 1}).map( (_,i) => {
@@ -51,7 +51,7 @@ export default function PokemonPagination({currentPage, totalPages}:PokemonPagin
               <PaginationLink
                 onClick={()=>handlePageChange(pageNum) }
                 isActive={currentPage === pageNum}
-                className='cursor-pointer'
+                className='cursor-pointer cursor-target'
               >
                 {pageNum}
               </PaginationLink>
@@ -61,7 +61,7 @@ export default function PokemonPagination({currentPage, totalPages}:PokemonPagin
         <PaginationItem>
           <PaginationNext
             onClick={()=>(currentPage < totalPages ? handlePageChange(nextGroupPage) : undefined)} 
-            className={!hasNextGroup ? 'invisible' : 'cursor-pointer'}
+            className={!hasNextGroup ? 'invisible' : 'cursor-pointer cursor-target'}
           />
         </PaginationItem>
       </PaginationContent>

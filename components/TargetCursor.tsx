@@ -12,7 +12,7 @@ export interface TargetCursorProps {
 }
 
 const TargetCursor: React.FC<TargetCursorProps> = ({
-  targetSelector = '.cursor-pointer',
+  targetSelector = '.cursor-target',
   spinDuration = 2,
   hideDefaultCursor = true,
   hoverDuration = 0.2,
@@ -138,7 +138,10 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
     };
 
     const mouseUpHandler = () => {
-      if (!dotRef.current) return;
+      if (!dotRef.current) {
+        currentLeaveHandler?.();
+        return;
+      }
       gsap.to(dotRef.current, { scale: 1, duration: 0.3 });
       gsap.to(cursorRef.current, { scale: 1, duration: 0.2 });
     };
