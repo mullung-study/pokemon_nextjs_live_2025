@@ -34,3 +34,41 @@ function buildEvolutionInfo(evolChain:any, pokemonName:string) {
   return {evolInfo, evolStage}
 
 }
+
+// export async function syncMissingPokemons() {
+//   const allIds = Array.from({ length: 1010 }, (_, i) => i + 1)
+
+//   const { data: existingPokemons } = await supabase
+//     .from('pokemons')
+//     .select('id')
+
+//   const existingIds = existingPokemons?.map((p) => p.id) || []
+//   const missingIds = allIds.filter((id) => !existingIds.includes(id))
+
+//   if (missingIds.length === 0) {
+//     return { upserted: 0, message: '누락된 포켓몬이 없습니다.' }
+//   }
+
+//   console.log(`누락된 포켓몬 ${missingIds.length}개 발견:`, missingIds)
+
+//   const details = []
+//   for (const id of missingIds) {
+//     const pokemon = {
+//       name: `pokemon-${id}`,
+//       url: `https://pokeapi.co/api/v2/pokemon/${id}`,
+//     }
+
+//     const data = await fetchPokemonData(pokemon)
+//     if (data) {
+//       details.push(data)
+//     }
+//   }
+
+//   const result = await updatePokemonsToDB(details)
+
+//   return {
+//     ...result,
+//     missingCount: missingIds.length,
+//     message: `누락된 ${missingIds.length}개 중 ${result?.upserted}개 업데이트 완료`,
+//   }
+// }
