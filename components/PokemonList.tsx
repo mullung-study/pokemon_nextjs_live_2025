@@ -1,7 +1,7 @@
 "use client"
 
 import { getPokemonIdByTypes } from "@/lib/pokeAPI";
-import { usePokeTypeStore } from "@/store/pokeTypeStore";
+import { usePokeTypeStore } from "@/store/pokeFilterStore";
 import { Suspense, useEffect, useState } from "react";
 import PokemonItem from "./PokemonItem";
 import PokemonPagination from "./PokemonPagination";

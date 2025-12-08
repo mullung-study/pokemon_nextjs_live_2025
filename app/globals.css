@@ -120,3 +120,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.filter-label {
+  @apply font-semibold whitespace-nowrap border-2 rounded-2xl py-4 px-2 bg-gray-300 dark:bg-gray-600
+}

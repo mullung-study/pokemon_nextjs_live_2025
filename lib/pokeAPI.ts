@@ -83,7 +83,7 @@ export async function getPokemonSummaries(offset=0, limit=300): Promise<{name:st
   const res = await fetch(`${POKE_API_BASE}/pokemon?offset=${offset}&limit=${limit}`)
   if (!res.ok) throw new Error(`getPokemonSummaries Error, offset=${offset}, limit=${limit}`)
   const data = await res.json()
-  return data.result;
+  return data.results;
 }
 
 export async function getPokemonDetail(url:string): Promise<PokemonDetailProps> {
