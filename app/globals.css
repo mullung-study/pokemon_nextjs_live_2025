@@ -122,5 +122,5 @@
 }
 
 .filter-label {
-  @apply font-semibold whitespace-nowrap border-2 rounded-2xl py-4 px-2 bg-gray-300 dark:bg-gray-600
+  @apply font-semibold whitespace-nowrap py-2 px-3 border-r-2 border-gray-300 dark:border-gray-600
 }
