@@ -1,5 +1,5 @@
 import PokemonList from "@/components/PokemonList";
-import TypeFilter from "@/components/TypeFilter";
+import SearchBar from "@/components/SearchBar";
 import { redirect } from "next/navigation";
 
 
@@ -13,7 +13,7 @@ export default async function Home({searchParams}:{searchParams:Promise<{page?:s
 
   return (
     <div>
-      <TypeFilter />
+      <SearchBar />
       <PokemonList currentPage={currentPage} />
     </div>
   );

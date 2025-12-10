@@ -1,11 +1,40 @@
 
 import { supabase } from "@/lib/supabase";
 import NextAuth, { NextAuthOptions } from "next-auth";
+import CredentialProvider from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github";
 import GoogleAuthProvider from "next-auth/providers/google";
 
 export const authOptions: NextAuthOptions = {
   providers: [
+    CredentialProvider({
+      name: "Email",
+      credentials: {
+        email: {label:"Email", type:"email", placeholder: "your@email.com"},
+        password: {label:"Password", type: "password"}
+      },
+      async authorize(credentials) {
+        if(!credentials?.email || !credentials?.password) {
+          return null
+        }
+
+        const {data, error} = await supabase.auth.signInWithPassword({
+          email: credentials.email,
+          password: credentials.password
+        });
+
+        if (error || !data.user) {
+          console.error('로그인 실패: ', error?.message);
+          return null
+        }
+
+        return {
+          id: data.user.id,
+          email: data.user.email,
+          name: data.user.user_metadata?.name || data.user.email?.split('@')[0]
+        }
+      }
+    }),
     GithubProvider({
       clientId: process.env.GITHUB_ID!,
       clientSecret: process.env.GITHUB_SECRET!,

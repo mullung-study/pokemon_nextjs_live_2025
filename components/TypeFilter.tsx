@@ -12,14 +12,12 @@ import { usePokeFilterStore } from "@/store/pokeFilterStore"
 export default function TypeFilter() {
   const router = useRouter()
 
-  const {selectedTypes, toggleType} = usePokeFilterStore()
+  const {selectedTypes, toggleType, filteredPokemons} = usePokeFilterStore()
 
   function handleClick(type:PokemonTypeKey) {
-    const params = new URLSearchParams()
     toggleType(type)
+    filteredPokemons()
 
-    params.set('page', '1')
-    router.push(`/?${params.toString()}`)
   }
 
   useEffect( ()=>console.log(selectedTypes), [selectedTypes] )

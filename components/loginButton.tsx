@@ -3,6 +3,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 import { Badge } from "./ui/badge";
+import Link from "next/link";
 
 
 interface UserData {
@@ -51,5 +52,13 @@ export default function LoginButton() {
     )
   }
   
-  return <Button onClick={() => signIn()} className="cursor-target">로그인</Button>
+  return (
+    <div className="flex items-center gap-2">
+      <Button asChild>
+        <Link href="/signup">회원가입</Link>
+      </Button>
+      <Button onClick={() => signIn()} className="cursor-target">로그인</Button>
+    </div>
+    
+  )
 }

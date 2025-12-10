@@ -1,53 +1,53 @@
 "use client"
 
 import { getPokemonIdByTypes } from "@/lib/pokeAPI";
-import { usePokeTypeStore } from "@/store/pokeFilterStore";
-import { Suspense, useEffect, useState } from "react";
-import PokemonItem from "./PokemonItem";
+import { usePokeFilterStore } from "@/store/pokeFilterStore";
+
 import PokemonPagination from "./PokemonPagination";
+import { usePokemonInit } from "@/hooks/usePokemonInit";
+import PokemonCard from "./PokemonCard";
+import { PokemonTypeKey } from "@/lib/pokemonTypes";
 
 
 const ITEMS_PER_PAGE = 12;
-const TOTAL_POKEMON = 1010;
+// const TOTAL_POKEMON = 1010;
 
 export default function PokemonList({currentPage}:{currentPage:number}) {
-  const {selectedTypes} = usePokeTypeStore()
-  const [pokemonIds, setPokemonIds] = useState<number[]>([])
+  const {allPokemons, filteredResults, selectedTypes, query} = usePokeFilterStore()
+  
+  usePokemonInit()
+  const hasFilters = selectedTypes.length > 0 || query
+  const pokemons = hasFilters ? filteredResults : allPokemons || []
 
-  useEffect( ()=> {
-    const fetchIds = async () => {
-      try {
-        if (selectedTypes.length===0) {
-          setPokemonIds(Array.from({length:TOTAL_POKEMON}, (_,i)=>i+1))
-        } else {
-          const filteredId = await getPokemonIdByTypes(selectedTypes)
-          setPokemonIds(filteredId)
-        }
-      } catch(error) {
-        console.error("PokemonList : ", error)
-        setPokemonIds(Array.from({length:TOTAL_POKEMON}, (_,i)=>i+1))
-      }
-    }
-    fetchIds()
-  }, [selectedTypes])
-  const totalPages = Math.ceil(pokemonIds.length/ITEMS_PER_PAGE)
+  const totalPages = Math.ceil(pokemons.length/ITEMS_PER_PAGE)
   const validPage = Math.min(currentPage, totalPages)
   const startIdx = (validPage - 1) * ITEMS_PER_PAGE
   const endIdx = startIdx + ITEMS_PER_PAGE
-  const displayIds = pokemonIds.slice(startIdx, endIdx)
+  const displayPokemons = pokemons.slice(startIdx, endIdx)
 
   return (
     <>
       <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-8 mx-4">
-        {displayIds.map((i) => {
+        {displayPokemons.map((pokemon) => {
           return (
-            <PokemonItem key={i} id={i}/>
+            <PokemonCard
+              key={pokemon.id}
+              pokemon= {{
+                id:pokemon.id,
+                name: pokemon.name_ko || pokemon.name_en,
+                types: pokemon.types as PokemonTypeKey[],
+                image: pokemon.image_url
+              }}
+            />
           )
         })}
       </div>
-      <div className="flex justify-center py-6">
-        <PokemonPagination currentPage={validPage} totalPages={totalPages}/>
-      </div>
+      {totalPages >= 1 && (
+        <div className="flex justify-center py-6">
+          <PokemonPagination currentPage={validPage} totalPages={totalPages}/>
+        </div>
+      )}
+
     </>
   )
 
