@@ -4,6 +4,8 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialProvider from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github";
 import GoogleAuthProvider from "next-auth/providers/google";
+import NaverProvider from "next-auth/providers/naver";
+import KaKaoProvider from "next-auth/providers/kakao";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -43,6 +45,14 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
+    NaverProvider({
+      clientId: process.env.NAVER_CLIENT_ID!,
+      clientSecret: process.env.NAVER_CLIENT_SECRET!,
+    }),
+    KaKaoProvider({
+      clientId: process.env.KAKAO_CLIENT_ID!,
+      clientSecret: process.env.KAKAO_CLIENT_SECRET!,
+    })
   ],
   session: {
     strategy: 'jwt',
@@ -82,6 +92,9 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     }
+  },
+  pages: {
+    signIn: '/login'
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

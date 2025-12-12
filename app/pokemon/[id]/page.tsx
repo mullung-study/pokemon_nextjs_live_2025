@@ -1,21 +1,26 @@
 import { getPokemon } from "@/lib/pokeAPI"
 import PokemonCard from "@/components/PokemonCard"
 import { notFound } from "next/navigation";
+import { getPokemonById } from "@/lib/actions/pokemonData";
 
 export default async function PokemonDetails({params}:{params:Promise<{id:string}>}) {
-  try {
-    const {id} = await params
-    const pokemon = await getPokemon(Number(id));
-    return (
-      <div className="flex justify-center m-4" >
-        <PokemonCard pokemon={pokemon} />
-      </div>
-    )
-  } catch(error) {
-    if (error instanceof Error && error.message==="NOT_FOUND") {
-      notFound()
-    }
-    throw error;
-  }
 
+  const {id} = await params
+  const pokemon = await getPokemonById(Number(id));
+
+  if (!pokemon) {
+    notFound()
+  }
+  return (
+    <div className="flex justify-center m-4" >
+      <PokemonCard pokemon={
+        {
+          id:pokemon.id,
+          name:pokemon.name_ko || pokemon.name_en,
+          types:pokemon.types,
+          image:pokemon.image_url
+        }
+      } />
+    </div>
+  )
 }

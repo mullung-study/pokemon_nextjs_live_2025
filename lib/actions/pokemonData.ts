@@ -15,3 +15,17 @@ export async function getAllPokemons():Promise<PokemonsFromSupabase[]> {
   }
   return data || []
 }
+
+export async function getPokemonById(id:number) {
+  const {data, error} = await supabase
+    .from('pokemons')
+    .select('id, name_en, name_ko, image_url, types')
+    .eq('id', id)
+    .single()
+
+  if (error) {
+    console.error('getPokemonById 오류:', error)
+    return null
+  }
+  return data
+}
